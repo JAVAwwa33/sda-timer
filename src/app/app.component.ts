@@ -3,6 +3,8 @@ import {interval, Subscription} from "rxjs";
 import {TimeModel} from "./models/time.model";
 import {DefaultTime} from "./models/default.time";
 import {TimeCounterService} from "./services/time-counter.service";
+import {FormBuilder, FormGroup} from "@angular/forms";
+import * as _ from "lodash";
 
 
 @Component({
@@ -11,14 +13,21 @@ import {TimeCounterService} from "./services/time-counter.service";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  time: TimeModel = DefaultTime.getDefault();
+  defaultTime: DefaultTime = new DefaultTime();
+  time: TimeModel = _.cloneDeep(this.defaultTime.defaultTime);
   subscription?: Subscription;
   isPaused: boolean = true;
 
-  constructor(private timeCounterService: TimeCounterService) {
+  timeForm!: FormGroup;
+
+  constructor(private timeCounterService: TimeCounterService,
+              private formBuilder: FormBuilder) {
   }
 
   ngOnInit(): void {
+    this.timeForm = this.formBuilder.group(
+      {minutes: ['']}
+    )
   }
 
   togglePause() {
@@ -38,7 +47,7 @@ export class AppComponent implements OnInit {
   }
 
   resetTime() {
-    this.time = DefaultTime.getDefault();
+    this.time = _.cloneDeep(this.defaultTime.defaultTime);
   }
 
   private playAudio(){
@@ -46,5 +55,11 @@ export class AppComponent implements OnInit {
     audio.src = '../../assets/audio/TF013.WAV';
     audio.load();
     audio.play();
+  }
+
+  setTime(){
+    let minutes: number = this.timeForm.controls.minutes.value;
+    this.time.minutes = _.cloneDeep(minutes);
+    this.defaultTime.setDefaultMinutes(_.cloneDeep(minutes));
   }
 }
