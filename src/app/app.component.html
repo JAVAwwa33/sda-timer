@@ -1,5 +1,5 @@
 <div>
-  {{time.minutes}} : {{time.seconds}}
+  {{time.minutes | addPrefix:'*'}} : {{time.seconds | addPrefix:'0'}}
 </div>
 <div>
   <button type="button" (click)="togglePause()" *ngIf="isPaused">Start</button>

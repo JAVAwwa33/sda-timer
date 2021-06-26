@@ -4,7 +4,7 @@ export class DefaultTime {
   public static getDefault(): TimeModel {
     return {
       seconds: 3,
-      minutes: 0
+      minutes: 2
     }
   }
 }
