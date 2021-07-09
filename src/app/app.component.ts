@@ -52,9 +52,9 @@ export class AppComponent implements OnInit {
 
   private playAudio(){
     let audio = new Audio();
-    audio.src = '../../assets/audio/TF013.WAV';
+    audio.src = 'assets/audio/TF013.WAV';
     audio.load();
-    audio.play();
+    audio.play().then();
   }
 
   setTime(){
